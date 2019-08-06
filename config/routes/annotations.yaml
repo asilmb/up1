@@ -1,3 +1,7 @@
 controllers:
     resource: ../../src/Controller/
     type: annotation
+# the "user" route name is not important yet
+auto:
+    path: /auto
+    controller: App\Controller\AutoController::index
