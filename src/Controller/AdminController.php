@@ -6,15 +6,15 @@ use App\Entity\Auto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AutoController extends AbstractController
+class AdminController extends AbstractController
 {
     /**
-     * @Route("/auto", name="auto")
+     * @Route("/auto", name="index")
      */
     public function index()
     {
-        return $this->render('auto/index.html.twig', [
-            'controller_name' => 'AutoController',
+        return $this->render('admin/index.html.twig', [
+            'controller_name'  => 'AdminController',
         ]);
     }
 	/**
