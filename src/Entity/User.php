@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +36,16 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Auto", mappedBy="user_id", orphanRemoval=true)
+     */
+    private $autos;
+
+    public function __construct()
+    {
+        $this->autos = new ArrayCollection();
+    }
 
 
 
@@ -129,5 +141,36 @@ class User implements UserInterface
     public function setApiToken($apiToken): void
     {
         $this->apiToken = $apiToken;
+    }
+
+    /**
+     * @return Collection|Auto[]
+     */
+    public function getAutos(): Collection
+    {
+        return $this->autos;
+    }
+
+    public function addAuto(Auto $auto): self
+    {
+        if (!$this->autos->contains($auto)) {
+            $this->autos[] = $auto;
+            $auto->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAuto(Auto $auto): self
+    {
+        if ($this->autos->contains($auto)) {
+            $this->autos->removeElement($auto);
+            // set the owning side to null (unless already changed)
+            if ($auto->getUserId() === $this) {
+                $auto->setUserId(null);
+            }
+        }
+
+        return $this;
     }
 }

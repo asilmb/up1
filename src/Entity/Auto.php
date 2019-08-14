@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,10 +24,6 @@ class Auto
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $model;
-    /**
-     * @ORM\Column(type="integer", length=255, nullable=true)
-     */
-    private $user_id;
 
     /**
      * @ORM\Column(type="integer", length=255, nullable=true)
@@ -39,14 +37,8 @@ class Auto
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $pic;
-    /**
-     * @ORM\Column(type="integer", length=255, nullable=true)
-     */
-    private $assembly;
-    /**
-     * @ORM\Column(type="integer", length=255, nullable=true)
-     */
-    private $registered;
+
+
     /**
      * @ORM\Column(type="decimal", length=255, nullable=true)
      */
@@ -73,19 +65,11 @@ class Auto
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $engine;
-    /**
-     * @ORM\Column(type="integer", length=255, nullable=true)
-     */
-    private $type;
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $colors;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $features;
+    private $colors;
 
     /**
      * @ORM\Column(type="datetimetz")
@@ -95,6 +79,42 @@ class Auto
      * @ORM\Column(type="datetimetz")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\type", inversedBy="autos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $type;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\feature", inversedBy="autos")
+     */
+    private $feature;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="autos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user_id;
+
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\city", inversedBy="registeredAutos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $registered;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\city", inversedBy="assemblyAuto")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $assembly;
+
+    public function __construct()
+    {
+        $this->feature = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -254,13 +274,13 @@ class Auto
         return $this->createdAt;
     }
 
-   
+
     public function setCreatedAt($createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-   
+
     public function getUpdatedAt()
     {
         return $this->updatedAt;
@@ -360,6 +380,44 @@ class Auto
     public function setUserId($user_id): void
     {
         $this->user_id = $user_id;
+    }
+
+    /**
+     * @return Collection|feature[]
+     */
+    public function getFeature(): Collection
+    {
+        return $this->feature;
+    }
+
+    public function addFeature(feature $feature): self
+    {
+        if (!$this->feature->contains($feature)) {
+            $this->feature[] = $feature;
+        }
+
+        return $this;
+    }
+
+    public function removeFeature(feature $feature): self
+    {
+        if ($this->feature->contains($feature)) {
+            $this->feature->removeElement($feature);
+        }
+
+        return $this;
+    }
+
+
+    public function getAssembly()
+    {
+        return $this->assembly;
+    }
+
+
+    public function setAssembly($assembly): void
+    {
+        $this->assembly = $assembly;
     }
 }
 //ABS AM/FM Radio Air Bags Air Conditioning Alloy Rims CD Player Immobilizer Key Keyless Entry Power Locks Power Mirrors Power Steering Power Windows
