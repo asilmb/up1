@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AutoRepository")
  */
+
+
 class Auto
 {
     /**
@@ -20,6 +22,10 @@ class Auto
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $model;
+    /**
+     * @ORM\Column(type="integer", length=255, nullable=true)
+     */
+    private $user_id;
 
     /**
      * @ORM\Column(type="integer", length=255, nullable=true)
@@ -34,13 +40,35 @@ class Auto
      */
     private $pic;
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", length=255, nullable=true)
      */
-    private $price;
+    private $assembly;
+    /**
+     * @ORM\Column(type="integer", length=255, nullable=true)
+     */
+    private $registered;
     /**
      * @ORM\Column(type="decimal", length=255, nullable=true)
      */
+    private $price;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     private $desc;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $transmission;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $fuel;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $gear;
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -58,6 +86,15 @@ class Auto
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $features;
+
+    /**
+     * @ORM\Column(type="datetimetz")
+     */
+    private $createdAt;
+    /**
+     * @ORM\Column(type="datetimetz")
+     */
+    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -196,5 +233,133 @@ class Auto
         return $this;
     }
 
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps(): void
+    {
+        $this->setUpdatedAt(new \DateTime('now'));
+        if ($this->getCreatedAt() === null) {
+            $this->setCreatedAt(new \DateTime('now'));
+        }
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+   
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+   
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+
+    public function setUpdatedAt($updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+
+    public function getFeatures()
+    {
+        return $this->features;
+    }
+
+
+    public function setFeatures($features): void
+    {
+        $this->features = $features;
+    }
+
+
+    public function getColors()
+    {
+        return $this->colors;
+    }
+
+
+    public function setColors($colors): void
+    {
+        $this->colors = $colors;
+    }
+
+
+    public function getEngine()
+    {
+        return $this->engine;
+    }
+
+
+    public function setEngine($engine): void
+    {
+        $this->engine = $engine;
+    }
+
+
+    public function getGear()
+    {
+        return $this->gear;
+    }
+
+
+    public function setGear($gear): void
+    {
+        $this->gear = $gear;
+    }
+
+
+    public function getFuel()
+    {
+        return $this->fuel;
+    }
+
+
+    public function setFuel($fuel): void
+    {
+        $this->fuel = $fuel;
+    }
+
+    public function getRegistered()
+    {
+        return $this->registered;
+    }
+
+    public function setRegistered($registered): void
+    {
+        $this->registered = $registered;
+    }
+
+    public function getTransmission()
+    {
+        return $this->transmission;
+    }
+
+    public function setTransmission($transmission): void
+    {
+        $this->transmission = $transmission;
+    }
+
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId($user_id): void
+    {
+        $this->user_id = $user_id;
+    }
+}
 //ABS AM/FM Radio Air Bags Air Conditioning Alloy Rims CD Player Immobilizer Key Keyless Entry Power Locks Power Mirrors Power Steering Power Windows
